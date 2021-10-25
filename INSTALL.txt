@@ -1,0 +1,67 @@
+
+COMPILING NOTES
+===============
+
+The gui/ directory contains the C++ code.
+
+OBLIGE uses makefiles for building:
+
+-  Makefile.local for the Linux binary (local files)
+-  Makefile.xming for the Win32 EXE
+-  Makefile.unixy for a system-wide Linux install
+
+These makefiles require GNU Make.
+
+I personally compile the Win32 binaries on Linux using what's
+called a "Cross Compiler".  The Ubuntu package is "mingw32".
+That means I don't need to reboot out of Linux in order to
+compile Win32 binaries.  Plus compiling stuff in Windows
+always seems to be a major pain in the arse.
+
+Sorry, but if you want to compile the Win32 binary under
+Windows then you are on your own.
+
+For a system-wide installation (with Makefile.unixy) you need
+to run "make install" as the superuser after building.  Users
+can override script and data files by placing a file with the
+same name (e.g. "games/doom.lua") in their $HOME/.oblige/ dir.
+
+
+REQUIRED LIBRARIES
+==================
+
+Zlib (v1.2.3 or later)
+  http://www.zlib.net/
+
+FLTK (Fast Light Tool Kit) : v1.3
+  http://www.fltk.org/
+
+FLTK may require: libpng, jpeglib, zlib
+  http://libpng.org/
+  http://www.jpeg.org/jpeg/index.html
+
+
+FLTK BUILDING HINTS
+===================
+
+(1) Linux: ./configure --quiet --disable-shared --disable-gl \
+           --disable-localjpeg --disable-localzlib --disable-localpng
+
+(2) Win32 cross-compile:
+    (a) read README.CMake.txt and copy the cross-compiling snippet
+        in there to a file: Toolchain-mingw32.cmake
+
+    (b) edit Toolchain-mingw32.cmake and set the proper paths for
+        the cross-compiling tools (for me: i586-mingw32msvc)
+
+    (c) mkdir mingw ; cd mingw
+
+    (d) cmake -DCMAKE_TOOLCHAIN_FILE=../Toolchain-mingw32.cmake \
+        CMAKE_BUILD_TYPE=Release -DOPTION_USE_GL=OFF -DOPTION_USE_THREADS=OFF
+
+    (e) make
+
+    Note that the build fails when it gets to some stuff which require
+    FLUID to process some .fl files.  That doesn't matter since the
+    needed libraries (in mingw/lib) have been built by then.
+

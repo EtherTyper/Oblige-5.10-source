@@ -1,0 +1,10 @@
+*.o
+CONFIG.txt
+LOGS.txt
+.DS_Store
+PAK0.pak
+PAK1.pak
+Oblige
+quake_tex.wd2
+tools/qsavetex/qsavetex
+qsavetex_log.txt
